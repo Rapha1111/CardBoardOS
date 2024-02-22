@@ -1,0 +1,8 @@
+.g{border:0px; position:fixed; top:0; left:0; width:50%; height:100%;overflow: hidden;}
+.d{border:0px; position:fixed; top:0; right:0; width:50%; height:100%;overflow: hidden;}
+.alert{position:fixed; background:#1fc3f9;width:100%; height:100%; top:0%; left:0}
+button{position:fixed; bottom:0; right:0}
+#alpha{position:fixed; top:0px}
+#beta{position:fixed; top: 10px}
+#gamma{position:fixed; top:20px}
+#world_select{position:fixed; top:10%; left:10%; width:50%; height:50%; background:#1fc3f9}

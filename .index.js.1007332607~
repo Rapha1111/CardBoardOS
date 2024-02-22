@@ -1,0 +1,119 @@
+function $_GET(param) {
+  var vars = {};
+  window.location.href.replace(location.hash, '').replace(
+    /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+    function(m, key, value) { // callback
+      vars[key] = value !== undefined ? value : '';
+    }
+  );
+
+  if (param) {
+    return vars[param] ? vars[param] : null;
+  }
+  return vars;
+}
+
+/*
+if ($_GET("monde")) {
+  anmonde = decodeURI($_GET("monde"))
+} else {
+  anmonde = "hub"
+  scenes = { "hub": [{ "img": "panacc.svg", "x": 10, "y": 0, "z": 10, "color": "black", "w": 15, "h": 15 }, { "img": "portailmondetest.svg", "x": 180, "y": 0, "z": 50, "color": "black", "w": 10, "h": 15, "setscene": "test" }, { "img": "portailrmonde.svg", "x": 90, "y": 0, "z": 50, "color": "black", "w": 10, "h": 15, "setworld": "rmonde" }], "test": [{ "img": "https://metaverse.rapha1112.repl.co/meuble/maison.svg", "x": 20, "y": 0, "z": 50, "color": "black", "w": 10, "h": 10 }, { "img": "https://metaverse.rapha1112.repl.co/meuble/maison.svg", "x": 90, "y": 0, "z": 20, "color": "pink", "w": 10, "h": 10 }, { "img": "portailhub.svg", "x": -20, "y": 0, "z": 50, "color": "red", "w": 10, "h": 15, "setscene": "hub" }, { "img": "portailerror.svg", "x": -100, "y": 0, "z": 51, "color": "red", "w": 10, "h": 15, "setscene": "ezd" }] }
+}
+*/
+apps=[]
+localStorage.setItem("data", JSON.stringify([]))
+
+
+//
+function start() {
+  try {
+    DeviceMotionEvent.requestPermission().then(response => {
+      if (response == 'granted') {
+        document.querySelector(".alert").hidden = true
+
+        window.addEventListener('deviceorientation', (event) => {main(event)});
+      }
+    });
+  } catch {
+    try {
+
+      document.querySelector(".alert").hidden = true
+       window.addEventListener('deviceorientation', (event) => {main(event)});
+
+
+    } catch {
+      alert("non disponible")
+    }
+  }
+}
+
+function main(event){
+
+  data=[]
+  for (var i = 0; i < apps.length; i++) {
+      for (var l = 0; l < apps[i].el.length; l++) {
+        ob=apps[i]["el"][l]
+        if (ob["onclick"]){
+          data.push({"img": ob["img"], "x": ob["x"]+apps[i]["x"], "y": ob["y"]+apps[i]["y"], "z": ob["z"], "color": ob["color"], "w": ob["w"], "h": ob["h"], "onclick":ob["onclick"] })
+        } else {
+          data.push({"img": ob["img"], "x": ob["x"]+apps[i]["x"], "y": ob["y"]+apps[i]["y"], "z": ob["z"], "color": ob["color"], "w": ob["w"], "h": ob["h"] })
+        }
+      }
+  }
+  
+  localStorage.setItem("data", JSON.stringify(data))
+  
+  rotation_degrees = event.alpha;
+  frontToBack_degrees = event.beta;
+  leftToRight_degrees = event.gamma;
+  if (event.gamma > 0) {
+    rotation_degrees -= 180
+  } else {
+    leftToRight_degrees = 90 + ((leftToRight_degrees * -1 - 90) * -1)
+    if (rotation_degrees > 180) {
+      rotation_degrees = rotation_degrees - 360
+    }
+
+  }
+  a = "alpha : " + Math.floor(rotation_degrees)
+  document.getElementById("alpha").innerHTML = a
+  b = "beta : " + Math.floor(event.beta)
+  document.getElementById("beta").innerHTML = b
+  g = "gamma : " + Math.floor(leftToRight_degrees) + " / " + Math.floor(event.gamma)
+  document.getElementById("gamma").innerHTML = g
+  
+  localStorage.setItem("alpha", Math.floor(rotation_degrees))
+  localStorage.setItem("beta", Math.floor(event.beta))
+  localStorage.setItem("gamma", Math.floor(leftToRight_degrees))
+
+  if (gamepadopenhome()){
+    ok=1
+    for (var i = 0; i < apps.length; i++) {
+      if (apps[i]["appname"]=="home"){
+        ok=0
+      }
+    }
+    if (ok){
+    apps.push({"appname":"home","x":rotation_degrees, "y":event.beta, "el":[{ "img": "home.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 8, "h": 2}, {"img": "horloge.svg", "x": -3.5, "y": -0.1, "z": _, "color": "black", "w": 1.5, "h": 1.5}]})
+    }
+  }
+
+}
+
+function gamepadopenhome() {
+    // Obtenir la liste des gamepads connectés
+    const gamepads = navigator.getGamepads();
+
+    // Parcourir tous les gamepads
+    for (let i = 0; i < gamepads.length; i++) {
+        const gamepad = gamepads[i];
+        if (gamepad && gamepad.connected) {
+            if (gamepad.buttons[5].pressed || gamepad.buttons[3].pressed) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
