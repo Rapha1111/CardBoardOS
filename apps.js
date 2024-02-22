@@ -202,8 +202,10 @@ function openspotify(i){
       } else {
       
       const clientId = '282a9c9673294baf90f2d6e67603a888';
-      const redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
-      const scope = 'user-read-playback-state user-modify-playback-state';
+        const redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
+
+        //const redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
+        const scope = 'user-read-playback-state user-modify-playback-state';
       const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${encodeURIComponent(scope)}&response_type=token`;
       window.location.href=authorizeUrl
     }
