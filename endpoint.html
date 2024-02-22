@@ -20,7 +20,7 @@
     if (getAccessToken()){
       var urlCourante = window.location.href;
       localStorage.setItem("spotify", getAccessToken());alert("Connecté !");
-      if (urlCourante=="https://rapha1111.github.io/CardBoardOS/endpoint.html"){window.location.href="https://rapha1111.github.io/CardBoardOS"
+      if (urlCourante.includes("github.io")){window.location.href="https://rapha1111.github.io/CardBoardOS"
     } else {
         window.location.href="/"
     }}
