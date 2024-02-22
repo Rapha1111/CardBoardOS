@@ -30,7 +30,7 @@ function heure(){
   var heureFormattee = heures + ':' + minutes + ':' + secondes;
   return heureFormattee
 }
-
+ 
 function openclock(i){
     apps[i]["el"]=[{"img": "close.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 0.5, "h": 0.5, "onclick":"close"}]
     apps[i]["appname"]="time"
