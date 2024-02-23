@@ -42,7 +42,7 @@ var objets = []
 var objets2 = []
 repeat(10, () => {
   var mbl = new Image({
-  url: "panacc.svg",
+  url: "assets/fondapp.png",
   width:1000,
   height:1000,
   x:100000000,
@@ -50,7 +50,7 @@ repeat(10, () => {
 })
 objets.push(mbl)
     var mbl2 = new Image({
-    url: "panacc.svg",
+    url: "assets/fondapp.png",
     width:1000,
     height:1000,
     x:100000000,
@@ -218,7 +218,7 @@ function reloadimg(){
   console.log(data)
   while(data.length>objets.length){
         var mbl = new Image({
-        url: "panacc.svg",
+        url: "assets/fondapp.png",
         width:1000,
         height:1000,
         x:100000000,
@@ -226,7 +226,7 @@ function reloadimg(){
       })
       objets.push(mbl)    
   var mbl2 = new Image({
-    url: "panacc.svg",
+    url: "assets/fondapp.png",
     width:1000,
     height:1000,
     x:100000000,

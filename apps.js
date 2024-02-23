@@ -32,14 +32,14 @@ function heure(){
 }
  
 function openclock(i){
-    apps[i]["el"]=[{"img": "close.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 0.5, "h": 0.5, "onclick":"close"}]
+    apps[i]["el"]=[{"img": "assets/close.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 0.5, "h": 0.5, "onclick":"close"}]
     apps[i]["appname"]="time"
     apps[i]["text"]=[{"text":heure, "x": 0, "y": 0, "z": 0, "size":50, "color":"#505050"}]
 }
 
 //FOR THE COLOR SELECTOR
 function opencolor(i){
-  apps[i]["el"]=[{"img": "fondapp.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 5, "h": 4},{"img": "color/b1.svg", "x": 15, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b1"},{"img": "color/b2.svg", "x": 5, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b2"},{"img": "color/b3.svg", "x": -5, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b3"},{"img": "color/b.svg", "x": -15, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"bc"},{"img": "color/g1.svg", "x": 15, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g1"},{"img": "color/g2.svg", "x": 5, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g2"},{"img": "color/g3.svg", "x": -5, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g3"},{"img": "color/b.svg", "x": -15, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"bs"}]
+  apps[i]["el"]=[{"img": "assets/fondapp.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 5, "h": 4},{"img": "color/b1.svg", "x": 15, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b1"},{"img": "color/b2.svg", "x": 5, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b2"},{"img": "color/b3.svg", "x": -5, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"b3"},{"img": "color/b.svg", "x": -15, "y": 90, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"bc"},{"img": "color/g1.svg", "x": 15, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g1"},{"img": "color/g2.svg", "x": 5, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g2"},{"img": "color/g3.svg", "x": -5, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"g3"},{"img": "color/b.svg", "x": -15, "y": 50, "z": 0, "color": "black", "w": 0.7, "h": 0.7, "onclick":"bs"}]
   apps[i]["fct"]={"b1":(i)=>{localStorage.setItem("bgcolor", "#00e9ff")},"b2":(i)=>{localStorage.setItem("bgcolor", "#0088ff")},"b3":(i)=>{localStorage.setItem("bgcolor", "#0100ff")},"bc":(i)=>{localStorage.setItem("bgcolor", "#000000")},"g1":(i)=>{localStorage.setItem("sol", "#a8ff00")},"g2":(i)=>{localStorage.setItem("sol", "#2cff00")},"g3":(i)=>{localStorage.setItem("sol", "#00ffcc")},"bs":(i)=>{localStorage.setItem("sol", "#000000")}}
   apps[i]["appname"]="color"
   apps[i]["text"]=[{"text":()=>{return "COLOR CHANGER"}, "x": 0, "y": 43, "z": 0, "size":12}]
@@ -68,7 +68,7 @@ function textmind(){
 function openmindfulness(i){
   var maintenant = new Date();
   sm = maintenant.getTime();
-  apps[i]["el"]=[{"img": "fondapp.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 5, "h": 4},{"img": "cache.svg", "x": 0, "y": 5, "z": 0, "color": "black", "w": 4.5, "h": 0.45, "onclick":"cache"}]
+  apps[i]["el"]=[{"img": "assets/fondapp.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 5, "h": 4},{"img": "assets/cache.svg", "x": 0, "y": 5, "z": 0, "color": "black", "w": 4.5, "h": 0.45, "onclick":"cache"}]
   apps[i]["appname"]="Méditation"
   apps[i]["text"]=[{"text":()=>{return "MINDFULNESS"}, "x": 0, "y": 43, "z": 0, "size":12},{"text":textmind, "x": 0, "y": 15, "z": 0, "size":25}]
   apps[i]["fct"]={"cache":(i)=>{localStorage.setItem("bgcolor", "#000000");localStorage.setItem("sol", "#000000")}}
@@ -157,7 +157,7 @@ function openspotify(i){
         
     //l'app
     apps[i]["text"]=[{"text":()=>{return "no song played"}, "x": -15, "y": -20, "z": 0, "size":12, "color":"#ffffff"},{"text":()=>{return ""}, "x": -15, "y": -35, "z": 0, "size":12, "color":"#979797" }]
-    apps[i]["el"]=[{"img": "fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "previous.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "play.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "next.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}]
+    apps[i]["el"]=[{"img": "assets/fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "assets/empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "assets/previous.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "assets/play.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "assets/next.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}]
     apps[i]["appname"]="Spotify"
     reload(i)
     apps[i]["fct"]={"previous":(a)=>{
@@ -210,3 +210,56 @@ function openspotify(i){
       window.location.href=authorizeUrl
     }
             });}
+
+//POUR PHOTO-VIEW
+
+function chooseImageFromGallery() {
+    return new Promise((resolve, reject) => {
+      document.getElementById("file").hidden=false  
+      const input = document.getElementById('photo');
+      
+        input.value = "";
+        input.onchange = function() {
+            const file = this.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+              document.getElementById("file").hidden=true  
+              resolve(event.target.result);
+
+              
+            }
+            
+            reader.readAsDataURL(file);
+        };
+        
+        input.click();
+    });
+}
+function getImageProportions(base64Data) {
+    return new Promise((resolve, reject)=>{
+    var img = new Image();
+
+    // Lorsque l'image est chargée
+    img.onload = function() {
+        // Récupérer les dimensions de l'image
+        var width = this.width;
+        var height = this.height;
+        // Retourner les dimensions de l'image
+        resolve( { width: width, height: height })
+    };
+
+    // Définir la source de l'image comme étant la chaîne base64
+    img.src = base64Data;
+})}
+
+function opengallery(i){
+  chooseImageFromGallery().then((data)=>{
+    h=5
+    getImageProportions(data).then((prop)=>{
+    w=5*prop.width/prop.height
+    apps[i]["el"]=[{"img":data, "x":0, "y":0, "z":0, "color":"white", "h":h, "w":w}]
+    apps[i]["appname"]="photo"
+    apps[i]["text"]=[]
+  })})
+}
