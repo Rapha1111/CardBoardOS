@@ -78,7 +78,7 @@ function openmindfulness(i){
 if (localStorage.getItem("spotify")){
   var getAccessToken=localStorage.getItem("spotify")
 }
-function play() {
+/*function play() {
     fetch('https://api.spotify.com/v1/me/player/play', {
         method: 'PUT',
         headers: {
@@ -112,7 +112,7 @@ function previousTrack() {
             'Authorization': 'Bearer ' + getAccessToken
         }
     });
-}
+}*/
 la=0
 pl = 0
 function openspotify(i){
@@ -157,7 +157,7 @@ function openspotify(i){
         
     //l'app
     apps[i]["text"]=[{"text":()=>{return "no song played"}, "x": -15, "y": -20, "z": 0, "size":12, "color":"#ffffff"},{"text":()=>{return ""}, "x": -15, "y": -35, "z": 0, "size":12, "color":"#979797" }]
-    apps[i]["el"]=[{"img": "assets/fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "assets/empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "assets/previous.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "assets/play.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "assets/next.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}]
+    apps[i]["el"]=[{"img": "assets/fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "assets/empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "assets/previous-spotify.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "assets/play-spotify.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "assets/next-spotify.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}]
     apps[i]["appname"]="Spotify"
     reload(i)
     apps[i]["fct"]={"previous":(a)=>{
@@ -202,9 +202,11 @@ function openspotify(i){
       } else {
       
       const clientId = '282a9c9673294baf90f2d6e67603a888';
-        const redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
-
-        //const redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
+        
+      const redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
+       
+          //const redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
+        
         const scope = 'user-read-playback-state user-modify-playback-state';
       const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${encodeURIComponent(scope)}&response_type=token`;
       window.location.href=authorizeUrl
@@ -212,6 +214,10 @@ function openspotify(i){
             });}
 
 //POUR PHOTO-VIEW
+if (!localStorage.getItem("photo")){
+  localStorage.setItem("photo", "{}")
+}
+photos=JSON.parse(localStorage.getItem("photo"))
 
 function chooseImageFromGallery() {
     return new Promise((resolve, reject) => {
@@ -223,12 +229,11 @@ function chooseImageFromGallery() {
             const file = this.files[0];
             const reader = new FileReader();
             
-            reader.onload = function(event) {
-              document.getElementById("file").hidden=true  
-              resolve(event.target.result);
-
-              
-            }
+                reader.onload = function(event) {
+                        document.getElementById("file").hidden=true  
+                        resolve(event.target.result);
+                }
+            
             
             reader.readAsDataURL(file);
         };
@@ -253,13 +258,139 @@ function getImageProportions(base64Data) {
     img.src = base64Data;
 })}
 
-function opengallery(i){
-  chooseImageFromGallery().then((data)=>{
-    h=5
-    getImageProportions(data).then((prop)=>{
-    w=5*prop.width/prop.height
-    apps[i]["el"]=[{"img":data, "x":0, "y":0, "z":0, "color":"white", "h":h, "w":w}]
+function opengallery(i, opt){
+  function theapp(data, ratio, size=5, pinned=false){
+    apps[i]["el"]=[{"img":data, "x":0, "y":0, "z":0, "color":"white", "h":size, "w":size*ratio, "r":ratio, "close":pinned ? false : true},{"img":"assets/plus.svg", "x":10, "y":-35, "z":0, "color":"black", "h":0.7, "w":0.7, "onclick":"plus"},{"img":"assets/moins.svg", "x":0, "y":-35, "z":0, "color":"black", "h":0.7, "w":0.7, "onclick":"moins"},{"img":pinned ? "assets/pinned.svg" : "assets/pin.svg", "x":-10, "y":-35, "z":0, "color":"black", "h":0.7, "w":0.7, "onclick":"pin"}]
     apps[i]["appname"]="photo"
     apps[i]["text"]=[]
-  })})
+    apps[i]["fct"]={"plus":(a)=>{
+      apps[a]["el"][0]["h"]+=0.5
+      apps[a]["el"][0]["w"]=apps[a]["el"][0]["h"]*apps[a]["el"][0]["r"]
+
+    },"moins":(a)=>{
+                     apps[a]["el"][0]["h"]-=0.5
+                     apps[a]["el"][0]["w"]=apps[a]["el"][0]["h"]*apps[a]["el"][0]["r"]
+
+                   }, "pin":(a)=>{
+      if (apps[i]["el"][0]["close"]){
+        apps[i]["el"][0]["close"]=false
+        apps[i]["el"][3]["img"]="assets/pinned.svg"
+        apps[i]["z"]=-1
+        photos[data]={"h":apps[a]["el"][0]["h"], "r":apps[a]["el"][0]["r"], "x":apps[a]["x"], "y":apps[a]["y"]}
+        localStorage.setItem("photo", JSON.stringify(photos))
+      } else {
+        apps[i]["el"][0]["close"]=true
+        apps[i]["z"]=0
+        apps[i]["el"][3]["img"]="assets/pin.svg"
+        delete photos[data]
+        localStorage.setItem("photo", JSON.stringify(photo))
+      }}}
+  }
+  
+  if (opt==undefined){
+    chooseImageFromGallery().then((data)=>{
+      getImageProportions(data).then((prop)=>{
+        theapp(data, prop.width/prop.height)
+    })})
+  } else {
+    theapp(opt[0], opt[1], opt[2], true)
+  }
 }
+
+//TO CHARGE PHOTO PINNED
+document.addEventListener('DOMContentLoaded', function() {
+  
+for (var i in photos) {
+  if (photos.hasOwnProperty(i)) {
+      var max = 1000000000
+      var id = Math.floor(Math.random() * max).toString();
+      apps[id]={"appname":"photo", "x":photos[i]["x"], "y":photos[i]["y"], "text":[], "el":[], "fct":[]}
+      opengallery(id, [i, photos[i]["r"], photos[i]["h"]])
+}}
+});
+
+
+
+//THE CHRONO APP
+let timerInterval;
+let seconds = 0, minutes = 0, hours = 0;
+let running = false;
+lacpp=0
+function startStop(i) {
+  z=new Date();n=z.getTime()
+  if ((n-lacpp)>500){if (running) {
+        clearInterval(timerInterval);
+        running = false;
+        apps[i]["el"][0]["img"]="assets/play.svg"
+    } else {
+        timerInterval = setInterval(updateTimer, 1000);
+        running = true;
+        apps[i]["el"][0]["img"]="assets/pause.svg"
+    };lacpp=n}
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    updateDisplay();
+    running = false;
+}
+
+function updateTimer() {
+    seconds++;
+    if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes === 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const formattedTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+    return formattedTime;
+}
+
+function pad(val) {
+    return val > 9 ? val : "0" + val;
+}
+
+
+function openchrono(i){
+    apps[i]["el"]=[{"img": "assets/play.svg", "x": 15, "y": 0, "z": 0, "color": "black", "w": 1, "h": 1, "onclick":"play"},{"img": "assets/reset.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 1, "h": 1, "onclick":"reset"},{"img": "assets/close.svg", "x": -15, "y": 0, "z": 0, "color": "black", "w": 1, "h": 1, "onclick":"close"}]
+    apps[i]["appname"]="time"
+    apps[i]["text"]=[{"text":updateDisplay, "x": 0, "y": 0, "z": 0, "size":50, "color":"#505050"}]
+    apps[i]["fct"]={"play":startStop, "reset":resetTimer}
+    
+}
+
+//THE NEWS APP
+function fetchRedditWorldNews() {
+    return new Promise((resolve, reject) => {
+        fetch('https://www.reddit.com/r/worldnews/top.json?limit=10')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data from Reddit');
+                }
+                return response.json();
+            })
+            .then(data => resolve(data.data.children[0].data.title))
+            .catch(error => reject(error));
+    });
+}
+
+
+
+function opennews(i){
+  fetchRedditWorldNews().then((news)=>{
+  apps[i]["el"]=[{"img": "assets/reset.svg", "x": 10, "y": 0, "z": 0, "color": "black", "w": 1, "h": 1, "onclick":"reset"},{"img": "assets/close.svg", "x": -10, "y": 0, "z": 0, "color": "black", "w": 1, "h": 1, "onclick":"close"}]
+  apps[i]["appname"]="time"
+  apps[i]["text"]=[{"text":()=>{return news}, "x": 0, "y": 0, "z": 0, "size":15, "color":"#505050"}]
+  apps[i]["fct"]={"reset":opennews}
+  })}
+

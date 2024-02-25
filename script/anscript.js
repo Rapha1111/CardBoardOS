@@ -86,10 +86,10 @@ objtext2.push(mbl2)
 //objets
 if ($_GET("o")=="d"){
 var center = new Circle({radius: 5, color: "white", x:
--5, y: 0})
+-3, y: 0})
 } else {
   var center = new Circle({radius: 5, color: "white", x:
-5, y: 0})
+3, y: 0})
 }
 after(3, "seconds", ()=>{
 
@@ -115,7 +115,7 @@ forever(()=>{
   test2.y = (parseInt(localStorage.getItem("gamma"))*3-maxY-50)*/
   sol.y = (parseInt(localStorage.getItem("gamma"))*3-maxY-50)-540
 color = "white"
-size = 5
+size = 3
 for (let i = 0; i < data.length; i++) {
   objets[i]["x"] = parseInt(localStorage.getItem("alpha"))*3+(data[i]["x"]*-3)
   if ($_GET("o")=="d"){

@@ -68,6 +68,9 @@ function main(event){
         } else {
           data.push({"img": ob["img"], "x": ob["x"]+apps[i]["x"], "y": ob["y"]+apps[i]["y"], "z": ob["z"], "color": ob["color"], "w": ob["w"], "h": ob["h"],"app":i})
         }
+        if (ob["close"]!=undefined && ob["close"]==false){
+          data[data.length-1].app="no"
+        }
       }
   }}
 
@@ -121,8 +124,8 @@ function main(event){
     if (ok){
       var max = 1000000000
       var id = Math.floor(Math.random() * max).toString();
-    apps[id]={"appname":"home","x":rotation_degrees, "y":event.beta,"text":[{"text":()=>{return "CardBoard OS"}, "x": 0, "y": 20, "z": 0}], "el":[{"img": "apps-icon/horloge.png", "x": 0, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"clock"},{"img": "apps-icon/color.png", "x": -20, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"color"},{"img": "apps-icon/meditation.png", "x": -20, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"meditation"},{"img": "apps-icon/chrono.png", "x": 20, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"chrono"},{"img": "apps-icon/gallery.png", "x": 20, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"gallery"},{"img": "apps-icon/makeform.png", "x": 0, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"makeform"},{"img": "apps-icon/youtube.png", "x": 20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1, "onclick":"youtube"},{"img": "apps-icon/spotify.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"spotify"},{"img": "apps-icon/app+.svg", "x": -20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"app+"},], "fct":{"clock":(a)=>{openclock(a)}, "color":(a)=>{opencolor(a)}, "meditation":(a)=>{openmindfulness(a)}, "spotify":(a)=>{openspotify(a)}}, "gallery":(a)=>{opengallery(a)}}
-    }
+    apps[id]={"appname":"home","x":rotation_degrees, "y":leftToRight_degrees*(-3.37)+(339.33),"text":[{"text":()=>{return "CardBoard OS"}, "x": 0, "y": 20, "z": 0}], "el":[{"img": "apps-icon/horloge.png", "x": 0, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"clock"},{"img": "apps-icon/color.png", "x": -20, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"color"},{"img": "apps-icon/meditation.png", "x": -20, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"meditation"},{"img": "apps-icon/chrono.png", "x": 20, "y": -50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"chrono"},{"img": "apps-icon/gallery.png", "x": 20, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"gallery"},{"img": "apps-icon/news.png", "x": 0, "y": 50, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"news"},{"img": "apps-icon/youtube.png", "x": 20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1, "onclick":"youtube"},{"img": "apps-icon/spotify.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"spotify"},{"img": "apps-icon/app+.svg", "x": -20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"app+"},], "fct":{"clock":(a)=>{openclock(a)}, "color":(a)=>{opencolor(a)}, "meditation":(a)=>{openmindfulness(a)}, "spotify":(a)=>{openspotify(a)}, "gallery":(a)=>{opengallery(a)}, "news":(a)=>{opennews(a)}}
+    }}
     }
 
   if (localStorage.getItem("run")!=""){

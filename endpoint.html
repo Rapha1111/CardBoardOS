@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify connect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify connect</title>
 </head>
+
 <body>
   <script>
-        function getAccessToken() {
-            const hashParams = window.location.hash.substr(1).split('&');
-            for (let i = 0; i < hashParams.length; i++) {
-                const parts = hashParams[i].split('=');
-                if (parts[0] === 'access_token') {
-                    return parts[1];
-                }
-            }
-            return null;
+    function getAccessToken() {
+      const hashParams = window.location.hash.substr(1).split('&');
+      for (let i = 0; i < hashParams.length; i++) {
+        const parts = hashParams[i].split('=');
+        if (parts[0] === 'access_token') {
+          return parts[1];
         }
-    if (getAccessToken()){
+      }
+      return null;
+    }
+    if (getAccessToken()) {
       var urlCourante = window.location.href;
-      localStorage.setItem("spotify", getAccessToken());alert("Connecté !");
-      if (urlCourante.includes("github.io")){window.location.href="https://rapha1111.github.io/CardBoardOS"
-    } else {
-        window.location.href="/"
-    }}
-    </script>
+      localStorage.setItem("spotify", getAccessToken()); alert("Connecté !");
+      if (urlCourante.includes("github.io")) {
+        window.location.href = "https://rapha1111.github.io/CardBoardOS"
+      } else {
+        window.location.href = "/"
+      }
+    }
+  </script>
 </body>
+
 </html>

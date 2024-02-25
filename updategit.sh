@@ -4,5 +4,6 @@ git push -u origin main
 
 
 #to publish
-git commit -a
+git add .
+git commit
 git push -u origin main
