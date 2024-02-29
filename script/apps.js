@@ -1,4 +1,41 @@
 //open menu onclick
+let tabPresse = false;
+document.addEventListener('keyup', function(event) {
+    if (event.key === '²') {
+        tabPresse = false;
+    }
+});
+document.addEventListener('keydown', function(event) { 
+  if (event.key === '²') {
+        tabPresse = true;
+    }
+});
+
+//click on a 3d item
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      localStorage.setItem("enter", "no")
+    }
+});
+document.addEventListener('keydown', function(event) { 
+  if (event.key === 'Enter') {
+    localStorage.setItem("enter", "yes")
+    }
+});
+
+//close a 3d item
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'Escape') {
+      localStorage.setItem("quit", "no")
+    }
+});
+document.addEventListener('keydown', function(event) { 
+  if (event.key === 'Escape') {
+    localStorage.setItem("quit", "yes")
+    }
+});
+
+
 function gamepadopenhome() {
     // Obtenir la liste des gamepads connectés
     const gamepads = navigator.getGamepads();
@@ -7,16 +44,16 @@ function gamepadopenhome() {
     for (let i = 0; i < gamepads.length; i++) {
         const gamepad = gamepads[i];
         if (gamepad && gamepad.connected) {
-            if (gamepad.buttons[5].pressed || gamepad.buttons[3].pressed) {
+            if (gamepad.buttons[5].pressed || gamepad.buttons[3].pressed || tabPresse) {
                 return true;
             }
-        }
+        }  
     }
-
+    if (tabPresse) {
+      return true
+    }
     return false;
 }
-
-
 
 //FOR THE CLOCK APP
 function heure(){
@@ -115,6 +152,68 @@ function previousTrack() {
 }*/
 la=0
 pl = 0
+
+function changeMusic() {
+    const songName = localStorage.getItem("keyboard")
+    localStorage.setItem("keyboard","")
+    if (!songName) {
+        return;
+    }
+
+    fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(songName)}&type=track`, {
+        headers: {
+            'Authorization': 'Bearer ' + getAccessToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.tracks && data.tracks.items && data.tracks.items.length > 0) {
+            const trackId = data.tracks.items[0].id;
+            playTrack(trackId);
+        } else {
+        }
+    })
+    .catch(error => {
+        console.error('Error searching for track:', error);
+    });
+}
+
+function playTrack(trackId) {
+    // Récupérer l'appareil actuellement utilisé pour la lecture
+    fetch('https://api.spotify.com/v1/me/player', {
+        headers: {
+            'Authorization': 'Bearer ' + getAccessToken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.device && data.device.id) {
+            const deviceId = data.device.id;
+
+            // Lecture de la musique sur l'appareil actuellement utilisé
+            fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + getAccessToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'uris': [`spotify:track:${trackId}`]
+                })
+            })
+            .then()
+            .catch(error => {
+                console.error('Error changing music:', error);
+            });
+        } else {
+        }
+    })
+    .catch(error => {
+        console.error('Error retrieving active device:', error);
+    });
+}
+
+
 function openspotify(i){
     function reload(i){
       fetch('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -126,7 +225,6 @@ function openspotify(i){
           .then(data => {
               if (data && data.item && data.item.album && data.item.album.images && data.item.album.images.length > 0) {
                   const imageUrl = data.item.album.images[0].url;
-                  const artistNames = data.item.artists.map(artist => artist.name).join(', ');
                 apps[i]["text"][0]["text"]=()=>data.item.name;
                 apps[i]["text"][1]["text"]=()=>data.item.artists.map(artist => artist.name).join(', ');
 
@@ -157,19 +255,19 @@ function openspotify(i){
         
     //l'app
     apps[i]["text"]=[{"text":()=>{return "no song played"}, "x": -15, "y": -20, "z": 0, "size":12, "color":"#ffffff"},{"text":()=>{return ""}, "x": -15, "y": -35, "z": 0, "size":12, "color":"#979797" }]
-    apps[i]["el"]=[{"img": "assets/fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "assets/empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "assets/previous-spotify.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "assets/play-spotify.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "assets/next-spotify.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}]
+    apps[i]["el"]=[{"img": "assets/fond spotify.svg", "x": 0, "y": 0, "z": 0, "color": "black", "w": 6, "h": 3.75}, {"img": "assets/empty song.svg", "x": 15, "y": 10, "z": 0, "color": "black", "w": 2.5, "h": 2.5}, {"img": "assets/previous-spotify.png", "x": -5, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"previous"}, {"img": "assets/play-spotify.png", "x": -15, "y": 8, "z": 0, "color": "white", "w": 0.9, "h": 0.9, "onclick":"play"}, {"img": "assets/next-spotify.png", "x": -25, "y": 15, "z": 0, "color": "white", "w": 0.5, "h": 0.5, "onclick":"next"}, {"img": "assets/musicchanger.png", "x": -27, "y": 95, "z": 0, "color": "white", "w": 0.8, "h": 0.8, "onclick":"change"}]
     apps[i]["appname"]="Spotify"
     reload(i)
     apps[i]["fct"]={"previous":(a)=>{
       z=new Date();n=z.getTime()
-      if ((n-la)>1000){fetch('https://api.spotify.com/v1/me/player/previous', {
+      if ((n-la)>300){fetch('https://api.spotify.com/v1/me/player/previous', {
           method: 'POST',
           headers: {
               'Authorization': 'Bearer ' + getAccessToken
           }
       });la=n;reload(i)}},"next":(a)=>{
                     z=new Date();n=z.getTime()
-                    if ((n-la)>1000){fetch('https://api.spotify.com/v1/me/player/next', {
+                    if ((n-la)>300){fetch('https://api.spotify.com/v1/me/player/next', {
                         method: 'POST',
                         headers: {
                             'Authorization': 'Bearer ' + getAccessToken
@@ -178,7 +276,7 @@ function openspotify(i){
                    
             ,"play":(a)=>{
                    z=new Date();n=z.getTime()
-                   if ((n-la)>1000){
+                   if ((n-la)>300){
                      if (pl==0){
                        pl=1;fetch('https://api.spotify.com/v1/me/player/play', {
                            method: 'PUT',
@@ -195,18 +293,21 @@ function openspotify(i){
                         });
                      }
                      
-                     ;la=n;reload(i)}}
+                     ;la=n;reload(i)}},"change":(a)=>{changeMusic();setTimeout(reload, 3000, a)}} 
 
-}
   
       } else {
       
       const clientId = '282a9c9673294baf90f2d6e67603a888';
-        
-      const redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
+        var redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
+
+      if (window.location.href.includes("github.io")){
+        redirectUri = 'https://rapha1111.github.io/CardBoardOS/endpoint.html';
+      }  else {
+        redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
+      }
        
-          //const redirectUri = 'https://829449c6-5e5a-489a-9d24-4189ebefae68-00-32b01b05f09m0.janeway.replit.dev/endpoint.html';
-        
+          
         const scope = 'user-read-playback-state user-modify-playback-state';
       const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${encodeURIComponent(scope)}&response_type=token`;
       window.location.href=authorizeUrl
@@ -238,7 +339,6 @@ function chooseImageFromGallery() {
             reader.readAsDataURL(file);
         };
         
-        input.click();
     });
 }
 function getImageProportions(base64Data) {
@@ -379,7 +479,7 @@ function fetchRedditWorldNews() {
                 }
                 return response.json();
             })
-            .then(data => resolve(data.data.children[0].data.title))
+            .then(data => resolve(data.data.children[Math.floor(Math.random() * 10)].data.title))
             .catch(error => reject(error));
     });
 }
@@ -393,4 +493,100 @@ function opennews(i){
   apps[i]["text"]=[{"text":()=>{return news}, "x": 0, "y": 0, "z": 0, "size":15, "color":"#505050"}]
   apps[i]["fct"]={"reset":opennews}
   })}
+
+
+//THE KEYBOARD
+localStorage.setItem("keyboard","")
+
+function keyboardImg(letter){
+  return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500"><ellipse style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" cx="251.532" cy="252.297" rx="248.162" ry="245.405"/><text style="white-space: pre; fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 21.4px;" x="217.218" y="260.57" transform="matrix(19.252544, 0, 0, 17.217403, -4066.938537, -4111.155335)">'+letter+'</text></svg>'
+}
+ltype=0
+function typekeyboard(letter){
+  z=new Date();n=z.getTime()
+  if ((n-ltype)>300){
+    localStorage.setItem("keyboard",localStorage.getItem("keyboard")+letter)
+    ltype=n
+  }
+}
+
+function backspace(){
+  z=new Date();n=z.getTime()
+  if ((n-ltype)>300){
+    localStorage.setItem("keyboard",localStorage.getItem("keyboard").slice(0, -1))
+    ltype=n
+  }
+}
+
+function showkeyboard(i){
+  el=[]
+  fct={}
+  kb=["1234567890","AZERTYUIOP","QSDFGHJKLM",".,WXCVBN?!"]
+  for (let i = 0; i < 4; i++) {
+      for (let l = 0; l < 10; l++) {
+        el.push({"img":keyboardImg(kb[i][l]), "x":(l*-7)+35, "y":i*(-20)+43, "z":0, "color":"black", "w":0.5, "h":0.5, "onclick":kb[i][l]})
+        fct[kb[i][l]]=(a)=>{typekeyboard(kb[i][l])}
+      }
+  }
+  el.push({"img":"assets/clear.svg","x":31.5, "y":-35, "z":0, "color":"black", "w":1, "h":0.5, "onclick":"clear"},{"img":"assets/spacebar.svg","x":2.5, "y":-35, "z":0, "color":"black", "w":3.5, "h":0.5, "onclick":"space"},{"img":"assets/back.svg","x":-24.5, "y":-35, "z":0, "color":"black", "w":1, "h":0.5, "onclick":"back"})
+  fct["space"]=(a)=>{typekeyboard(" ")}
+  fct["back"]=(a)=>{backspace()}
+  fct["clear"]=(a)=>{localStorage.setItem("keyboard", "")}
+
+  apps[i]["el"]=el
+  apps[i]["fct"]=fct
+  apps[i]["appname"]="keyboard"
+  apps[i]["text"]=[{"text":()=>{return localStorage.getItem("keyboard")}, "x": 0, "y": 0, "z": 0, "size":15, "color":"#505050"}]
+}
+
+//For the timebulleapp
+function opentimebullapp(i){
+  apps[i]["el"]=[{"img": "assets/bulleapp.svg", "x": 0, "y": -30, "z": 0, "color": "black", "w": 6, "h": 3}, {"img": "apps-icon/horloge.png", "x": 20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"clock"}, {"img": "apps-icon/chrono.png", "x": 0, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"chrono"}, {"img": "apps-icon/timer.png", "x": -20, "y": 0, "z": 0, "color": "black", "w": 1.2, "h": 1.2, "onclick":"clock"}]
+}
+
+//for rappels
+if (!localStorage.getItem("rappels")){
+  localStorage.setItem("rappels","[]")
+}
+rappels = JSON.parse(localStorage.getItem("rappels"))
+
+function newrappel(i){
+  if (localStorage.getItem("keyboard")){
+    rappels.push(localStorage.getItem("keyboard"))
+    localStorage.setItem("keyboard", "")
+    localStorage.setItem("rappels", JSON.stringify(rappels))
+    openrappels(i)
+  }
+}
+lr=0
+function deleterappel(i, rappelid){
+  z=new Date();n=z.getTime()
+  if ((n-lr)>300){
+  r=[]
+
+  for (let i = 0; i < rappels.length; i++) {
+    if (i!=rappelid){
+      r.push(rappels[i])
+    }
+  }
+  rappels=r
+  localStorage.setItem("rappels", JSON.stringify(rappels))
+  openrappels(i)
+  lr=n
+}}
+
+function openrappels(l){
+  el=[{"img":"assets/plus.svg", "x":0, "y":30,"z":0, "w":1, "h":1, "color":"black", "onclick":"new"}]
+  text=[]
+  fct={"new":(a)=>newrappel(a)}
+  for (let i = 0; i < rappels.length; i++) {
+    el.push({"img":"assets/check.svg", "x":0, "y":i*-30,"z":0, "w":0.7, "h":0.7, "color":"black", "onclick":"delete-"+i})
+    text.push({"text":()=>{return rappels[i]}, "x": -10, "y": (i*-30)-70, "z": 0, "size":15, "color":"#505050", "align":"start"})
+    fct["delete-"+i]=(a)=>deleterappel(a, i)
+  }
+  apps[l]["appname"]="rappels"
+  apps[l]["el"]=el
+  apps[l]["fct"]=fct
+  apps[l]["text"]=text
+}
 

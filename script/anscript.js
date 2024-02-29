@@ -168,7 +168,7 @@ for (let i = 100; i > 0; i--) {
       objets2[j].sendToFront()
     }
   }
-
+}
 //les texts
   if (JSON.stringify(text) != localStorage.getItem("text")){
       text = JSON.parse(localStorage.getItem("text"))
@@ -196,18 +196,10 @@ for (let i = 100; i > 0; i--) {
     objtext2[i]["y"] = parseInt(localStorage.getItem("gamma"))*3-255+text[i]["y"]+(5*(Math.min(Math.max(101-text[i]["z"], 1), 100)/3)/2)-(Math.min(Math.max(101-text[i]["z"], 1), 100))
     
   }
-  for (let i = 100; i > 0; i--) {
     for (let j = 0; j < text.length; j++) {
-      if (text[j]["z"] == i){
         objtext[j].sendToFront()
         objtext2[j].sendToFront()
-      }
     }
-
-  }
-  
-}
-
 center.color = color
 center.radius = size
 center.sendToFront()
@@ -277,6 +269,8 @@ function loadtext(){
       objtext2[i].color=text[i]["color"]
       objtext[i].size=text[i]["size"]
       objtext2[i].size=text[i]["size"]
+      objtext[i].textAlign=text[i]["align"]
+      objtext2[i].textAlign=text[i]["align"]
     }
     for (let i = 0; i < objtext.length; i++) {
       objtext[i]["x"] = 10000000
@@ -298,13 +292,16 @@ function gamepadclick() {
         // Vérifier si le gamepad est connecté
         if (gamepad && gamepad.connected) {
             // Vérifier si la touche 0 ou 7 est appuyée
-            if (gamepad.buttons[0].pressed || gamepad.buttons[7].pressed) {
+            if (gamepad.buttons[0].pressed || gamepad.buttons[7].pressed || localStorage.getItem("enter")=="yes") {
                 return true;
             }
+        } else {
+          if (localStorage.getItem("enter")=="yes"){
+            return true
+          }
         }
     }
-
-    return false;
+  return false
 }
 function gamepadclose() {
     // Obtenir la liste des gamepads connectés
@@ -316,9 +313,13 @@ function gamepadclose() {
         // Vérifier si le gamepad est connecté
         if (gamepad && gamepad.connected) {
             // Vérifier si la touche 0 ou 7 est appuyée
-            if (gamepad.buttons[1].pressed || gamepad.buttons[2].pressed) {
+            if (gamepad.buttons[1].pressed || gamepad.buttons[2].pressed || localStorage.getItem("quit")=="yes") {
                 return true;
             }
+        } else {
+          if (localStorage.getItem("quit")=="yes"){
+            return true
+          }
         }
     }
 
